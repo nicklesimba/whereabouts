@@ -29,22 +29,22 @@ jobs:
   
       - name: Install
         run: |
-          go get -u golang.org/x/lint/golint \
-          ./hack/install-kubebuilder-tools.sh \
+          go get -u golang.org/x/lint/golint 
+          ./hack/install-kubebuilder-tools.sh 
           
   
       - name: Before script
         run: |
-          ./hack/generate-code.sh \
-          golint pkg/... cmd/... \
-          go vet */*.go \
-          test -z $(gofmt -l pkg/. cmd/.) \
+          ./hack/generate-code.sh 
+          golint pkg/... cmd/... 
+          go vet */*.go 
+          test -z $(gofmt -l pkg/. cmd/.) 
   
       - name: Script
         run:
-          ./hack/test-go.sh \
-          ./hack/build-go.sh \
-          KUBEBUILDER_ASSETS="$(pwd)/bin" $GOPATH/bin/goveralls -service=travis-ci \
-          docker build -t dougbtv/whereabouts . \
-          docker build -t dougbtv/whereabouts-ocp -f Dockerfile.openshift . \
-          docker images \
+          ./hack/test-go.sh 
+          ./hack/build-go.sh 
+          KUBEBUILDER_ASSETS="$(pwd)/bin" $GOPATH/bin/goveralls -service=travis-ci 
+          docker build -t dougbtv/whereabouts . 
+          docker build -t dougbtv/whereabouts-ocp -f Dockerfile.openshift . 
+          docker images 

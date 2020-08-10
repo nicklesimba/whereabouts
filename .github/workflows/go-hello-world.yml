@@ -1,0 +1,50 @@
+name: Go-hello-world
+
+on: [push, pull_request]
+
+jobs:
+
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    if: >
+      (( github.event.pull_request.head.repo.owner.login != github.event.pull_request.base.repo.owner.login ) &&
+        github.event_name == 'pull_request' ) || (github.event_name == 'push' && github.event.commits != '[]' )
+    env:
+      GO111MODULE: on
+      TARGET: amd64
+      
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.13
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      
+      - name: Before install
+        run: go get github.com/mattn/goveralls
+  
+      - name: Install
+        run: |
+          go get -u golang.org/x/lint/golint \
+          ./hack/install-kubebuilder-tools.sh \
+          
+  
+      - name: Before script
+        run: |
+          ./hack/generate-code.sh \
+          golint pkg/... cmd/... \
+          go vet */*.go \
+          test -z $(gofmt -l pkg/. cmd/.) \
+  
+      - name: Script
+        run:
+          ./hack/test-go.sh \
+          ./hack/build-go.sh \
+          KUBEBUILDER_ASSETS="$(pwd)/bin" $GOPATH/bin/goveralls -service=travis-ci \
+          docker build -t dougbtv/whereabouts . \
+          docker build -t dougbtv/whereabouts-ocp -f Dockerfile.openshift . \
+          docker images \

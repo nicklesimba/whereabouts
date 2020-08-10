@@ -41,10 +41,35 @@ jobs:
           test -z $(gofmt -l pkg/. cmd/.) 
   
       - name: Script
-        run:
+        run: |
           ./hack/test-go.sh 
           ./hack/build-go.sh 
           KUBEBUILDER_ASSETS="$(pwd)/bin" $GOPATH/bin/goveralls -service=travis-ci 
           docker build -t dougbtv/whereabouts . 
           docker build -t dougbtv/whereabouts-ocp -f Dockerfile.openshift . 
           docker images 
+     
+      ## Expecting this bit to fail. That is okay for now.
+#      - name: Deploy
+#      # Push images to Dockerhub on merge to master
+#      - on:
+#          branches: 
+#            - master
+#        run: |
+#          bash -c '
+#          docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS";
+#          docker push dougbtv/whereabouts:latest;
+#          docker push dougbtv/whereabouts-ocp:latest;
+#          echo done'
+#          
+#      - name: Push
+#        run: |
+#          bash -c '
+#          docker tag dougbtv/whereabouts:latest dougbtv/whereabouts:$TRAVIS_TAG;
+#          docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"; 
+#          docker push dougbtv/whereabouts:$TRAVIS_TAG;
+#          echo done'
+#          on:
+#            tags: true
+#            all_branches: true
+#            condition: "$TRAVIS_TAG =~ ^v[0-9].*$"

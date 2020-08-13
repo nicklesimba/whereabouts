@@ -31,8 +31,12 @@ jobs:
         run: |
           go get -u golang.org/x/lint/golint 
           ./hack/install-kubebuilder-tools.sh 
-          
-  
+      
+      - name: Explore working directory (temporary)
+        run: |
+          pwd
+          ls
+      
       - name: Before script
         run: |
           ./hack/generate-code.sh 

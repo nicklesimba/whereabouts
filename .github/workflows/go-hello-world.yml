@@ -35,7 +35,10 @@ jobs:
       - name: Explore working directory (temporary)
         run: |
           pwd
+          echo ---
           ls
+          echo ---
+          echo $GOPATH
       
       - name: Before script
         run: |

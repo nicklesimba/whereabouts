@@ -37,18 +37,18 @@ jobs:
           GO111MODULE="on" go get sigs.k8s.io/kind@v0.8.1
           echo ‘export PATH=/root/go/bin:$PATH’ >> /root/.bashrc
           source .bashrc
-        cat > kind-flannel.yml << EOF
-        kind: Cluster
-        apiVersion: kind.sigs.k8s.io/v1alpha3
-        networking:
-        disableDefaultCNI: true # disable kindnet
-        podSubnet: 10.244.0.0/16 # set to Flannel's default subnet
-        Nodes:
-         - role: control-plane
-         - role: worker
-         - role: worker
-        EOF
-        kind create cluster --config kind-flannel.yml
+          cat > kind-flannel.yml << EOF
+          kind: Cluster
+          apiVersion: kind.sigs.k8s.io/v1alpha3
+          networking:
+          disableDefaultCNI: true # disable kindnet
+          podSubnet: 10.244.0.0/16 # set to Flannel's default subnet
+          Nodes:
+          - role: control-plane
+          - role: worker
+          - role: worker
+          EOF
+          kind create cluster --config kind-flannel.yml
     
       - name: Explore working directory (temporary)
         run: |

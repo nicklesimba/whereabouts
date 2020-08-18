@@ -35,7 +35,7 @@ jobs:
       - name: Install and configure KIND
         run: |
           GO111MODULE="on" go get sigs.k8s.io/kind@v0.8.1
-          echo ‘export PATH=/root/go/bin:$PATH’ >> /root/.bashrc
+          sudo bash -c "echo ‘export PATH=/root/go/bin:$PATH’ >> /root/.bashrc"
           sudo source .bashrc
           cat > kind-flannel.yml << EOF
           kind: Cluster

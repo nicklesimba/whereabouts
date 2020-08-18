@@ -39,7 +39,7 @@ jobs:
           sudo bash -c "echo ‘export PATH=/root/go/bin:$PATH’ >> /root/.bashrc"
           echo testprint2
           sudo -s
-          source .bashrc
+          source ~/.bashrc
           echo testprint3
           cat > kind-flannel.yml << EOF
           kind: Cluster

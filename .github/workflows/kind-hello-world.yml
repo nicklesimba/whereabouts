@@ -46,7 +46,7 @@ jobs:
           networking:
             disableDefaultCNI: true # disable kindnet
             podSubnet: 10.244.0.0/16 # set to Flannel's default subnet
-          Nodes:
+          nodes:
           - role: control-plane
           - role: worker
           - role: worker

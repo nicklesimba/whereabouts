@@ -52,7 +52,7 @@ jobs:
           - role: worker
           - role: worker
           EOF
-          echotestprint4
+          echo testprint4
           kind create cluster --config kind-flannel.yml
     
       - name: Explore working directory (temporary)
